@@ -1,8 +1,16 @@
 # Render.com one-click deploy blueprint for OfferDesk.
 # In Render: New → Blueprint → point at this repo/folder.
-# NOTE: SQLite lives on the instance disk. On Render's free tier the disk is
-# ephemeral (deal history resets on redeploy). For durable history, attach a
-# persistent disk (paid) and set DB_PATH env var, or upgrade to Postgres later.
+#
+# REQUIRED env vars (set in the Render dashboard → service → Environment):
+#   SECRET_KEY         — session signing key. Use "Generate" for a random value.
+#   STRIPE_SECRET_KEY  — Stripe secret key (sk_live_...). Required so the app can
+#                        verify active subscriptions at signup/login.
+# OPTIONAL:
+#   DATABASE_URL       — Postgres connection string (Render → New → PostgreSQL,
+#                        then copy its "Internal Database URL"). Without it the app
+#                        uses SQLite on the instance disk (ephemeral on free tier:
+#                        deal history resets on redeploy — export CSV regularly).
+#   STRIPE_PRICE_ID    — defaults to the $49/mo founding-dealer price.
 services:
   - type: web
     name: offerdesk
@@ -12,3 +20,5 @@ services:
     envVars:
       - key: PORT
         value: 10000
+      - key: SECRET_KEY
+        generateValue: true
