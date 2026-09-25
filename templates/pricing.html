@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OfferDesk — Founding Dealers</title>
+<style>
+  :root { --bg:#0f1420; --card:#1a2233; --line:#2b3a55; --txt:#eef2f8; --dim:#93a1b8;
+          --gold:#e8b64c; --green:#3ddc84; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:560px; margin:0 auto; padding:28px 18px 40px; }
+  h1 { font-size:30px; margin:0 0 6px; } h1 span { color:var(--gold); }
+  .sub { color:var(--dim); font-size:15px; line-height:1.6; }
+  .price { background:var(--card); border:2px solid var(--gold); border-radius:14px;
+           padding:22px; margin:22px 0; text-align:center; }
+  .price .n { font-size:48px; font-weight:800; }
+  .price .n small { font-size:16px; color:var(--dim); font-weight:400; }
+  .price .lock { color:var(--gold); font-weight:700; margin-top:6px; }
+  ul { list-style:none; padding:0; }
+  li { padding:10px 0; border-bottom:1px dashed var(--line); font-size:15px; }
+  li::before { content:"✓ "; color:var(--green); font-weight:700; }
+  .btn { display:block; width:100%; padding:16px; font-size:18px; font-weight:800; border:none;
+         border-radius:12px; background:var(--gold); color:#1a1405; text-decoration:none;
+         text-align:center; margin-top:14px; }
+  .btn.disabled { background:#3a4356; color:var(--dim); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+          padding:16px; margin-top:16px; }
+  input { width:100%; padding:12px; font-size:16px; border-radius:8px; margin-top:8px;
+          border:1px solid var(--line); background:#0d1320; color:var(--txt); }
+  .note { font-size:12px; color:var(--dim); line-height:1.5; }
+  .ok { color:var(--green); margin-top:8px; font-size:14px; }
+  .back { display:block; text-align:center; margin-top:18px; color:var(--dim); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Offer<span>Desk</span></h1>
+  <p class="sub">The instant cash-offer engine for card show dealers. Scan a slab, get your 65&nbsp;/&nbsp;70&nbsp;/&nbsp;75% offer tiers with fee math done — in seconds, at the table.</p>
+
+  <div class="price">
+    <div class="n">$49<small>/month</small></div>
+    <div class="lock">Founding-dealer rate — locked for life. First 50 dealers only.</div>
+  </div>
+
+  <ul>
+    <li>Instant 65 / 70 / 75% cash-offer tiers from any comp price</li>
+    <li>Net-of-fees math built in (eBay fees, shipping, your margin target)</li>
+    <li>Printable offer slips — hand one to the seller on the spot</li>
+    <li>Full deal log with CSV export for your books</li>
+    <li>Works on any phone. No inventory, no risk, no 15-minute comp hunts</li>
+  </ul>
+
+  <div class="card">
+    {% if payment_link and payment_link != "PASTE_PAYMENT_LINK_HERE" %}
+      <a class="btn" href="{{ payment_link }}">Subscribe — $49/mo</a>
+      <p class="note" style="text-align:center">Secure checkout by Stripe. Cancel anytime.</p>
+    {% else %}
+      <a class="btn disabled">Subscribe — checkout opening soon</a>
+      <p class="note">Founding-dealer checkout is being finalized. Leave your email and we'll notify you the moment the first 50 spots open.</p>
+      <input id="email" type="email" placeholder="you@yourshop.com">
+      <button class="btn" id="joinBtn" style="font-size:16px">Notify me</button>
+      <div id="msg" class="ok"></div>
+    {% endif %}
+  </div>
+
+  <a class="back" href="/">← Back to the app</a>
+</div>
+<script>
+const btn = document.getElementById("joinBtn");
+if (btn) btn.onclick = async () => {
+  const r = await fetch("/api/waitlist", {method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({email: document.getElementById("email").value})});
+  const d = await r.json();
+  document.getElementById("msg").textContent = d.error || "You're on the list ✓";
+};
+</script>
+<!-- Stripe publishable key wired in for future in-app checkout: {{ stripe_key[:12] }}… -->
+</body>
+</html>

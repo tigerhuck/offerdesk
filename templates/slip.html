@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Offer Slip — {{ deal.card_name }}</title>
+<style>
+  body { font-family:Georgia,serif; color:#111; max-width:480px; margin:0 auto; padding:24px; }
+  .head { text-align:center; border-bottom:3px double #111; padding-bottom:12px; }
+  .head h1 { margin:0; font-size:22px; letter-spacing:2px; }
+  .head p { margin:4px 0 0; font-size:12px; color:#555; }
+  .card { margin:16px 0; }
+  .card .name { font-size:18px; font-weight:bold; }
+  .card .sub { font-size:13px; color:#444; margin-top:4px; }
+  table { width:100%; border-collapse:collapse; margin-top:12px; }
+  th, td { border:1px solid #111; padding:10px; text-align:center; }
+  th { background:#f0f0f0; font-size:12px; text-transform:uppercase; }
+  td.offer { font-size:22px; font-weight:bold; }
+  tr.chosen td { background:#fff8e1; }
+  .fine { font-size:11px; color:#555; margin-top:14px; line-height:1.6; }
+  .sig { display:flex; gap:24px; margin-top:28px; }
+  .sig div { flex:1; border-top:1px solid #111; padding-top:6px; font-size:11px; }
+  .nopr { text-align:center; margin-top:24px; }
+  .nopr button { padding:12px 28px; font-size:16px; cursor:pointer; }
+  @media print {
+    .nopr { display:none; }
+    body { padding:0; }
+  }
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>{{ shop_name.upper() }}</h1>
+    <p>CASH BUY OFFER · {{ today }}</p>
+  </div>
+  <div class="card">
+    <div class="name">{{ deal.card_name or "—" }}</div>
+    <div class="sub">{{ deal.grader }} {{ deal.grade }}{% if deal.cert %} · Cert #{{ deal.cert }}{% endif %}</div>
+    <div class="sub">Market comp: ${{ "%.2f"|format(deal.comp) }}</div>
+  </div>
+  <table>
+    <tr><th>Tier</th><th>Cash offer</th><th>Est. margin</th></tr>
+    {% for t in tiers %}
+    <tr class="{{ 'chosen' if t.tier_pct == deal.tier_pct else '' }}">
+      <td>{{ t.tier_pct }}%</td>
+      <td class="offer">${{ "%.2f"|format(t.offer) }}</td>
+      <td>{{ t.margin_pct }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="fine">Offer valid today only, subject to in-hand inspection and cert verification.
+     Resale estimates assume standard marketplace fees and shipping.</p>
+  <div class="sig">
+    <div>Dealer signature</div>
+    <div>Seller signature</div>
+  </div>
+  <div class="nopr"><button onclick="window.print()">Print slip</button></div>
+</body>
+</html>
