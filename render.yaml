@@ -1,0 +1,14 @@
+# Render.com one-click deploy blueprint for OfferDesk.
+# In Render: New → Blueprint → point at this repo/folder.
+# NOTE: SQLite lives on the instance disk. On Render's free tier the disk is
+# ephemeral (deal history resets on redeploy). For durable history, attach a
+# persistent disk (paid) and set DB_PATH env var, or upgrade to Postgres later.
+services:
+  - type: web
+    name: offerdesk
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: PORT
+        value: 10000

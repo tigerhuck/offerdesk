@@ -1,0 +1,10 @@
+# OfferDesk configuration
+# ------------------------------------------------------------------
+# ANDREW: paste your Stripe $49/mo payment link between the quotes below.
+# That's the ONLY edit needed to turn on real billing.
+# (Stripe dashboard → Product catalogue → your product → Create payment link)
+payment_link: "https://buy.stripe.com/00w9AU3N71ZD9tr9yG2go00"
+
+# Stripe publishable key. Leave empty — the app auto-loads it from
+# stripe-publishable-key.txt in this folder (already saved).
+stripe_publishable_key: ""
