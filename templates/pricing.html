@@ -55,7 +55,11 @@
   <div class="card">
     {% if payment_link and payment_link != "PASTE_PAYMENT_LINK_HERE" %}
       <a class="btn" href="{{ payment_link }}">Subscribe — $49/mo</a>
-      <p class="note" style="text-align:center">Secure checkout by Stripe. Cancel anytime.</p>
+      <p class="note" style="text-align:center">Secure checkout by Stripe. Cancel anytime.<br>
+        After checkout, <a href="/signup" style="color:var(--gold)">create your account</a>
+        with the same email you subscribed with.</p>
+      <p class="note" style="text-align:center;margin-top:10px">Already subscribed?
+        <a href="/login" style="color:var(--gold)">Log in</a></p>
     {% else %}
       <a class="btn disabled">Subscribe — checkout opening soon</a>
       <p class="note">Founding-dealer checkout is being finalized. Leave your email and we'll notify you the moment the first 50 spots open.</p>
@@ -65,7 +69,7 @@
     {% endif %}
   </div>
 
-  <a class="back" href="/">← Back to the app</a>
+  <a class="back" href="/login">← Log in to the app</a>
 </div>
 <script>
 const btn = document.getElementById("joinBtn");

@@ -69,8 +69,15 @@
 </head>
 <body>
 <header>
-  <h1>Offer<span>Desk</span></h1>
-  <p id="shopLine">Instant cash-offer engine for card dealers</p>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+    <div>
+      <h1>Offer<span>Desk</span></h1>
+      <p id="shopLine">Instant cash-offer engine for card dealers</p>
+    </div>
+    <div style="font-size:11px;color:var(--dim);text-align:right;white-space:nowrap;padding-top:2px">
+      {{ g.user["email"] }}<br><a href="/logout" style="color:var(--dim)">Sign out</a>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
